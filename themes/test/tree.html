@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>发货源微信管理系统</title>
+		<meta name="keywords" content="微赞,微信,微信公众平台,公众平台二次开发,公众平台开源软件" />
+		<meta name="description" content="微赞,微信,微信公众平台,公众平台二次开发,公众平台开源软件" />
+		<link rel="shortcut icon" href="http://web.myweb.com/weizan/attachment/images/global/wechat.jpg" />
+		<link href="./resource/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./resource/css/font-awesome.min.css" rel="stylesheet">
+		<link href="./resource/css/common.css" rel="stylesheet">
+		<script>
+			var require = {
+				urlArgs: 'v=2016120914'
+			};
+		</script>
+		<script src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+		<script src="./resource/js/app/util.js"></script>
+		<script src="./resource/js/require.js"></script>
+		<script src="./resource/js/app/config.js"></script>
+		<!--[if lt IE 9]>
+		<script src="./resource/js/html5shiv.min.js"></script>
+		<script src="./resource/js/respond.min.js"></script>
+	<![endif]-->
+		<script type="text/javascript">
+			if(navigator.appName == 'Microsoft Internet Explorer') {
+				if(navigator.userAgent.indexOf("MSIE 5.0") > 0 || navigator.userAgent.indexOf("MSIE 6.0") > 0 || navigator.userAgent.indexOf("MSIE 7.0") > 0) {
+					alert('您使用的 IE 浏览器版本过低, 推荐使用 Chrome 浏览器或 IE8 及以上版本浏览器.');
+				}
+			}
+
+			window.sysinfo = {
+				'uniacid': '4',
+				'acid': '4',
+				'uid': '1',
+				'siteroot': 'http://web.myweb.com/weizan/',
+				'siteurl': 'http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&do=shop&m=ewei_shop',
+				'attachurl': 'http://web.myweb.com/weizan/attachment/',
+				'attachurl_local': 'http://web.myweb.com/weizan/attachment/',
+				'attachurl_remote': '',
+				'MODULE_URL': 'http://web.myweb.com/weizan/addons/ewei_shop/',
+				'cookie': {
+					'pre': 'bd0b_'
+				}
+			};
+		</script>
+	</head>
+
+	<body>
+		<div class="navbar navbar-inverse navbar-static-top" role="navigation" style="position:static;">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="./?refresh"><i class="fa fa-reply-all"></i>返回系统</a>
+					</li>
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=platform&"><i class="fa fa-cog"></i>基础设置</a>
+					</li>
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=site&"><i class="fa fa-life-bouy"></i>微站功能</a>
+					</li>
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=mc&"><i class="fa fa-gift"></i>粉丝营销</a>
+					</li>
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=setting&"><i class="fa fa-umbrella"></i>功能选项</a>
+					</li>
+					<li class="active">
+						<a href="./index.php?c=home&a=welcome&do=ext&m=ewei_shop"><i class="fa fa-shopping-cart"></i>人人商城</a>
+					</li>
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=ext&"><i class="fa fa-cubes"></i>其他扩展</a>
+					</li>
+
+					<!--                                                                    -->
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="display:block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; "><i class="fa fa-group"></i>发货源源码 <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./index.php?c=account&a=post&uniacid=4" target="_blank"><i class="fa fa-weixin fa-fw"></i> 编辑当前账号资料</a>
+							</li>
+							<li>
+								<a href="./index.php?c=account&a=display&" target="_blank"><i class="fa fa-cogs fa-fw"></i> 管理其它公众号</a>
+							</li>
+							<li>
+								<a href="./index.php?c=utility&a=emulator&" target="_blank"><i class="fa fa-mobile fa-fw"></i> 模拟测试</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="display:block; max-width:185px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; "><i class="fa fa-user"></i>admin (系统管理员) <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./index.php?c=user&a=profile&do=profile&" target="_blank"><i class="fa fa-weixin fa-fw"></i> 我的账号</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="./index.php?c=system&a=welcome&" target="_blank"><i class="fa fa-sitemap fa-fw"></i> 系统选项</a>
+							</li>
+							<li>
+								<a href="./index.php?c=system&a=welcome&" target="_blank"><i class="fa fa-cloud-download fa-fw"></i> 自动更新</a>
+							</li>
+							<li>
+								<a href="./index.php?c=system&a=updatecache&" target="_blank"><i class="fa fa-refresh fa-fw"></i> 更新缓存</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="./index.php?c=user&a=logout&"><i class="fa fa-sign-out fa-fw"></i> 退出系统</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="container-fluid">
+
+			<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+			<script type="text/javascript" src="../addons/ewei_shop/static/js/dist/jquery.gcjs.js"></script>
+			<script type="text/javascript" src="../addons/ewei_shop/static/js/dist/jquery.form.js"></script>
+			<script type="text/javascript" src="../addons/ewei_shop/static/js/dist/tooltipbox.js"></script>
+			<style type="text/css">
+				.red {
+					float: left;
+					color: red
+				}
+				
+				.white {
+					float: left;
+					color: #fff
+				}
+				
+				.tooltipbox {
+					background: #fef8dd;
+					border: 1px solid #c40808;
+					position: absolute;
+					left: 0;
+					top: 0;
+					text-align: center;
+					height: 20px;
+					color: #c40808;
+					padding: 2px 5px 1px 5px;
+					border-radius: 3px;
+					z-index: 1000;
+				}
+				
+				.red {
+					float: left;
+					color: red
+				}
+			</style>
+			<script language='javascript'>
+				function preview_html(txt) {
+					var win = window.open("", "win", "width=300,height=600"); // a window object
+					win.document.open("text/html", "replace");
+					win.document.write($(txt).val());
+					win.document.close();
+				}
+			</script>
+			<style type='text/css'>
+				.topmenu {
+					position: relative;
+					width: 100%;
+					float: left;
+					background: #efefef;
+					margin-bottom: 20px;
+				}
+				
+				.topmenu ul li a {
+					color: #000
+				}
+				
+				.topmenu .dropdown-menu li a {
+					color: #666
+				}
+				
+				.topmenu ul li {
+					content: '|'
+				}
+				
+				.splitter {
+					text-align: center;
+					background: #ccc;
+					color: #039702;
+					padding-top: 10px;
+					padding-bottom: 10px;
+					font-size: 12px;
+				}
+				
+				.splitter {
+					background: #fff;
+				}
+			</style>
+			<div class='topmenu'>
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="./index.php?c=home&a=welcome&do=ext&m=ewei_shop"><i class='fa fa-home'></i> 人人商城</a>
+					</li>
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-shopping-cart'></i> 商城管理 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=goods&do=shop&m=ewei_shop">商品管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&do=shop&m=ewei_shop">分类管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=dispatch&do=shop&m=ewei_shop">配送方式</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=adv&do=shop&m=ewei_shop">幻灯片管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=notice&do=shop&m=ewei_shop">公告管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=comment&do=shop&m=ewei_shop">评价管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=refundaddress&do=shop&m=ewei_shop">退货地址</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&method=store&p=verify&do=plugin&m=ewei_shop">门店管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-user'></i> 会员管理 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=list&do=member&m=ewei_shop">会员管理</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=level&do=member&m=ewei_shop">会员等级</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=group&do=member&m=ewei_shop">会员分组</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href='javascript;:' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-file-text-o'></i> 订单管理 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&do=order&m=ewei_shop">全部订单</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=0&do=order&m=ewei_shop">待付款</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=1&do=order&m=ewei_shop">待发货</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=2&do=order&m=ewei_shop">待收货</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=3&do=order&m=ewei_shop">已完成</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=-1&do=order&m=ewei_shop">已关闭</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=4&do=order&m=ewei_shop">退款申请</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=display&status=5&do=order&m=ewei_shop">已退款</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-money'></i> 财务管理 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=log&type=0&do=finance&m=ewei_shop">充值记录</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=log&type=1&do=finance&m=ewei_shop">余额提现</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=downloadbill&do=finance&m=ewei_shop">下载对账单</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-bar-chart-o '></i> 数据统计 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=sale&do=statistics&m=ewei_shop">销售统计</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=sale_analysis&do=statistics&m=ewei_shop">销售指标</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=order&do=statistics&m=ewei_shop">订单统计</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=goods&do=statistics&m=ewei_shop">商品销售明细</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=goods_rank&do=statistics&m=ewei_shop">商品销售排行</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=goods_trans&do=statistics&m=ewei_shop">商品销售转化率</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=member_cost&do=statistics&m=ewei_shop">会员消费排行</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=member_increase&do=statistics&m=ewei_shop">会员增长趋势</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&method=increase&p=commission&do=plugin&m=ewei_shop">分销商增长趋势</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cubes'></i> 插件管理 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+
+							<li class='splitter'>----以下超级管理员可见----</li>
+
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href='javascript:;' class="dropdown-toggle" data-toggle="dropdown"><i class='fa fa-cog'></i> 系统设置 <i class="fa fa-angle-down"></i></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=shop&do=sysset&m=ewei_shop">商城设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=follow&do=sysset&m=ewei_shop">引导及分享设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=notice&do=sysset&m=ewei_shop">模板消息设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=trade&do=sysset&m=ewei_shop">交易设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=pay&do=sysset&m=ewei_shop">支付方式</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=template&do=sysset&m=ewei_shop">模板设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=member&do=sysset&m=ewei_shop">会员设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=category&do=sysset&m=ewei_shop">分类层级设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&op=contact&do=sysset&m=ewei_shop">联系方式设置</a>
+							</li>
+
+							<li class='splitter'>----以下超级管理员可见----</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&method=setting&p=perm&do=plugin&m=ewei_shop">插件信息设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&method=plugins&p=perm&do=plugin&m=ewei_shop">公众号插件权限设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&method=set&p=perm&do=plugin&m=ewei_shop">插件分权开关设置</a>
+							</li>
+							<li>
+								<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&do=upgrade&m=ewei_shop">系统更新</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<ul class="nav nav-tabs">
+				<li>
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=goods&do=shop&m=ewei_shop">商品管理</a>
+				</li>
+				<li class="active">
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&do=shop&m=ewei_shop">商品分类管理</a>
+				</li>
+				<li>
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=dispatch&do=shop&m=ewei_shop">配送方式</a>
+				</li>
+				<li>
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=adv&do=shop&m=ewei_shop">幻灯片管理</a>
+				</li>
+				<li>
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=notice&do=shop&m=ewei_shop">公告管理</a>
+				</li>
+				<li>
+					<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=comment&do=shop&m=ewei_shop">评价管理</a>
+				</li>
+			</ul>
+
+			<script language="javascript" src="../addons/ewei_shop/static/js/dist/nestable/jquery.nestable.js"></script>
+			<link rel="stylesheet" type="text/css" href="../addons/ewei_shop/static/js/dist/nestable/nestable.css" />
+			<style type='text/css'>
+				.dd-handle {
+					height: 40px;
+					line-height: 30px
+				}
+			</style>
+			<div class="main">
+				<div class="category">
+					<form action="" method="post">
+						<div class="panel panel-default">
+							<div class="panel-body table-responsive">
+
+								<div class="dd" id="div_nestable">
+									<ol class="dd-list">
+
+										<li class="dd-item" data-id="2">
+
+											<div class="dd-handle" style='width:100%;'>
+												[ID: 2] 茶类
+												<span class="pull-right">
+                                            <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&parentid=2&op=post&do=shop&m=ewei_shop" title='添加子分类' ><i class="fa fa-plus"></i></a>                                                                                         <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=2&op=post&do=shop&m=ewei_shop" title="修改" ><i class="fa fa-edit"></i></a>
+                                                                                        <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=2&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;"><i class="fa fa-remove"></i></a>                                        </span>
+											</div>
+
+											<ol class="dd-list" style='width:100%;'>
+												<li class="dd-item" data-id="6">
+													<div class="dd-handle">
+														<img src="http://web.myweb.com/weizan/attachment/images/4/2016/12/ZmryZfqMe4AUlnz4WYHhy1rYre41rE.jpg" width='30' height="30" onerror="$(this).remove()" style='padding:1px;border: 1px solid #ccc;float:left;' /> &nbsp; [ID: 6] 岩茶 <span class="pull-right">
+                                                                                                          <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=6&op=post&do=shop&m=ewei_shop" title="修改" ><i class="fa fa-edit"></i></a>                                                       <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=6&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;"><i class="fa fa-remove"></i></a>                                                </span>
+													</div>
+												</li>
+												<li class="dd-item" data-id="7">
+													<div class="dd-handle">
+														<img src="http://web.myweb.com/weizan/attachment/images/4/2016/12/hVCaAV6as0zcNh0HcvhC0z6SnaAT06.jpg" width='30' height="30" onerror="$(this).remove()" style='padding:1px;border: 1px solid #ccc;float:left;' /> &nbsp; [ID: 7] 绿茶 <span class="pull-right">
+                                                                                                          <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=7&op=post&do=shop&m=ewei_shop" title="修改" ><i class="fa fa-edit"></i></a>                                                       <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=7&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;"><i class="fa fa-remove"></i></a>                                                </span>
+													</div>
+												</li>
+											</ol>
+
+										</li>
+										<li class="dd-item" data-id="3">
+
+											<div class="dd-handle" style='width:100%;'>
+												[ID: 3] 茶具
+											<span class="pull-right">
+                                            <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&parentid=3&op=post&do=shop&m=ewei_shop" title='添加子分类' >
+                                            	<i class="fa fa-plus"></i></a>                                                                                         
+                                            	<a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=3&op=post&do=shop&m=ewei_shop" title="修改" >
+                                            		<i class="fa fa-edit"></i></a>
+                                             <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=3&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;">
+                                             	<i class="fa fa-remove"></i></a>                                        </span>
+											</div>
+
+										</li>
+										<li class="dd-item" data-id="4">
+
+											<div class="dd-handle" style='width:100%;'>
+												[ID: 4] 香类
+												<span class="pull-right">
+                                            <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&parentid=4&op=post&do=shop&m=ewei_shop" title='添加子分类' ><i class="fa fa-plus"></i></a>                                                                                         <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=4&op=post&do=shop&m=ewei_shop" title="修改" ><i class="fa fa-edit"></i></a>
+                                                                                        <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=4&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;"><i class="fa fa-remove"></i></a>                                        </span>
+											</div>
+
+										</li>
+										<li class="dd-item" data-id="5">
+
+											<div class="dd-handle" style='width:100%;'>
+												[ID: 5] 香具
+												<span class="pull-right">
+                                            <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&parentid=5&op=post&do=shop&m=ewei_shop" title='添加子分类' ><i class="fa fa-plus"></i></a>                                                                                         <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=5&op=post&do=shop&m=ewei_shop" title="修改" ><i class="fa fa-edit"></i></a>
+                                                                                        <a class='btn btn-default btn-sm' href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&id=5&op=delete&do=shop&m=ewei_shop" title='删除' onclick="return confirm('确认删除此分类吗？');return false;"><i class="fa fa-remove"></i></a>                                        </span>
+											</div>
+
+										</li>
+
+									</ol>
+									<table class='table'>
+										<tr>
+											<td>
+												<a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=category&op=post&do=shop&m=ewei_shop" class="btn btn-default"><i class="fa fa-plus"></i> 添加新分类</a>
+												<input id="save_category" type="button" class="btn btn-primary" value="保存分类修改">
+												<input type="hidden" name="token" value="744364ef" />
+												<input type="hidden" name="datas" value="" />
+											</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+					</form>
+					</div>
+				</div>
+				<script language='javascript'>
+					$(function() {
+						var depth = 0;
+						if(depth <= 0) {
+							depth = 2;
+						}
+						$('#div_nestable').nestable({
+							maxDepth: depth
+						});
+
+						$(".dd-handle a,dd-handle embed,dd-handle div").mousedown(function(e) {
+							e.stopPropagation();
+						});
+						var $expand = false;
+						$('#nestableMenu').on('click', function(e) {
+							if($expand) {
+								$expand = false;
+								$('.dd').nestable('expandAll');
+							} else {
+								$expand = true;
+								$('.dd').nestable('collapseAll');
+							}
+						});
+
+						$("#save_category").click(function() {
+							var json = window.JSON.stringify($('#div_nestable').nestable("serialize"));
+							$(':input[name=datas]').val(json);
+							$('form').submit();
+						})
+
+					})
+				</script>
+
+				<script language='javascript'>
+					require(['bootstrap'], function($) {
+						$('.btn,.tip').each(function() {
+
+							if($(this).closest('td').css('position') == 'relative') {
+								return true;
+							}
+							$(this).hover(function() {
+								$(this).tooltip('show');
+							}, function() {
+								$(this).tooltip('hide');
+							});
+						})
+
+					});
+					$('.js-clip').each(function() {
+						util.clip(this, $(this).attr('data-url'));
+					});
+					$(function() {
+						$.ajax({
+							url: "http://web.myweb.com/weizan/web/index.php?c=site&a=entry&do=runtasks&m=ewei_shop",
+							cache: false
+						});
+					});
+				</script>
+				<script type="text/javascript">
+					require(['bootstrap']);
+
+					function check_ewei_shop_upgrade() {
+
+						require(['util'], function(util) {
+							if(util.cookie.get('checkeweishopupgrade_sys')) {
+								return;
+							}
+							$.post('http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=upgrade&op=check&do=sysset&m=ewei_shop', function(ret) {
+
+								ret = eval("(" + ret + ")");
+
+								if(ret && ret.result == '1') {
+									if(ret.filecount > 0) {
+										var html = '<div id="ewei-shop-upgrade-tips" class="upgrade-tips" style="top:50px;left:0;position:fixed"><a href="http://web.myweb.com/weizan/web/index.php?c=site&a=entry&p=upgrade&do=sysset&m=ewei_shop">人人商城检测到新版本 ' + ret.version;
+										html += ',请尽快更新！</a><span class="tips-close" style="background:#ff6600;" onclick="check_ewei_shop_upgrade_hide();"><i class="fa fa-times-circle"></i></span></div>';
+										$('body').prepend(html);
+									}
+								}
+							});
+						});
+					}
+
+					function check_ewei_shop_upgrade_hide() {
+						require(['util'], function(util) {
+							util.cookie.set('checkeweishopupgrade_sys', 1, 3600);
+							$('#ewei-shop-upgrade-tips').hide();
+						});
+					}
+					$(function() {
+						check_ewei_shop_upgrade();
+					});
+				</script>
+
+				<script type="text/javascript">
+					require(['bootstrap']);
+					$('.js-clip').each(function() {
+						util.clip(this, $(this).attr('data-url'));
+					});
+				</script>
+				<div class="container-fluid footer" role="footer">
+					<div class="page-header"></div>
+					<span class="pull-left">
+			<p>powered by 发货源源码 7biji.com</p>
+		</span>
+					<span class="pull-right">
+			<p><a href="http://www.012wz.com">关于微赞</a><a href="http://bbs.012wz.com">微赞帮助</a></p>
+		</span>
+				</div>
+	</body>
+
+</html>
